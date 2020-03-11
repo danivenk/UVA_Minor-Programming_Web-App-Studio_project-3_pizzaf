@@ -1,0 +1,96 @@
+/* Dani van Enk, 11823526 */
+/* predefining some mulitple used colors */
+/* alignment inheritance */
+h1, footer, .error {
+  text-align: center; }
+
+/* button border color inheritance */
+.login form .btn-primary:active, .container form .btn-primary:active, .row .btn-primary:active, .login form .btn-primary:focus, .container form .btn-primary:focus, .row .btn-primary:focus, .login form .btn-primary, .container form .btn-primary, .row .btn-primary, .login form .btn-primary:hover, .container form .btn-primary:hover, .row .btn-primary:hover {
+  border-color: #bb0050 !important; }
+
+/* button when clicked inheritance */
+.login form .btn-primary:active, .container form .btn-primary:active, .row .btn-primary:active, .login form .btn-primary:focus, .container form .btn-primary:focus, .row .btn-primary:focus {
+  background-color: #ca0057 !important;
+  box-shadow: 0 0 0 0.2rem #ff2281 !important; }
+
+.login form .btn-primary, .container form .btn-primary, .row .btn-primary {
+  background-color: #E06 !important;
+  float: right !important; }
+.login form .btn-primary:hover, .container form .btn-primary:hover, .row .btn-primary:hover {
+  background-color: #d5005b !important; }
+
+/* container style */
+#container {
+  margin: 0 10% 0 10%;
+  box-shadow: 0 0 10px #444;
+  height: 100%;
+  padding: 0;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column; }
+
+/* nav style */
+nav {
+  background-color: #E06; }
+
+.nav-link:hover {
+  color: #FFF !important; }
+
+.login {
+  right: 0;
+  position: absolute;
+  margin: 0 1% 0 0;
+  left: auto; }
+  .login form {
+    padding: 0 5%; }
+  .login a {
+    display: contents; }
+
+/* content style */
+.container {
+  flex: 1; }
+
+h1 {
+  margin: 3% 0; }
+
+h4 {
+  font-weight: bold;
+  font-size: 120%; }
+
+.row {
+  margin-top: 2%;
+  margin-bottom: 2%; }
+
+.card {
+  font-size: 80%; }
+  .card .card-body {
+    padding: 1.25rem 0; }
+  .card .card-text {
+    white-space: pre-line; }
+
+/* footer */
+footer {
+  left: 0;
+  bottom: 0;
+  width: 100%; }
+
+/* error page */
+/* mobile style changes */
+@media screen and (max-device-width: 768px) {
+  #container {
+    margin: 0; }
+
+  .nav-link {
+    padding-top: 5%;
+    padding-bottom: 5%; }
+
+  .login {
+    right: auto;
+    position: relative;
+    margin: 0;
+    left: 0; }
+
+  footer {
+    margin: 5% 0 2% 0; } }
+
+/*# sourceMappingURL=style.css.map */

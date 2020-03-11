@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<html lang="en-us">
+
+<head>
+    <!-- declaration of the page title, charset -->
+    <title>Project 2 - {% block title %}{% endblock %}</title>
+    <meta charset="UTF-8">
+
+    <!-- bootstrap inclusion -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- icon inclusion -->
+    <link rel="icon" href="{{ url_for('static', filename='img/books_icon.png') }}">
+
+    <!-- style and js inclusion -->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/javascript.js') }}"></script>
+</head>
+
+<body>
+    <!-- container of the page -->
+    <div id="container">
+
+        <!-- navbar -->
+        <nav class="navbar navbar-light navbar-expand-lg" id="nav">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav" id="nav_menu">
+                    <!-- show navbar items depending on if user is logged on or not -->
+                    {% if login %}
+                        {% for item_key in urls %}
+                            <a class="nav-item nav-link" href="{{ url_for(item_key) }}">{{ urls[item_key][0] }}</a>
+                        {% endfor %}
+                        <!-- greet user and show login button if logged on -->
+                        <div class="login">
+                            <div class="nav-item navbar-text">Hi there, {{ user }} |</div>
+                            <a class="nav-item nav-link" href="{{ url_for('logout') }}" role="button">Logout</a>
+                        </div>
+                    {% else %}
+                        {% for item_key in urls %}
+                            {% if not urls[item_key][1] %}
+                                <a class="nav-item nav-link" href="{{ url_for(item_key) }}">{{ urls[item_key][0] }}</a>
+                            {% endif %}
+                        {% endfor %}
+                        <!-- show login screen in dropdown if not logged in -->
+                        <a class="nav-item nav-link dropdown dropdown-toggle login" id="drop_link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Login</a>
+                        <div class="dropdown-menu login" id="drop_menu">
+                            <!-- login form -->
+                            <form class="needs-validation" action="{{ url_for('login') }}" method="post" novalidate>
+                                <div class="form-group">
+                                    <label for="username">Username: </label>
+                                    <input type="username" class="form-control" name="username" id="username" placeholder="Username" required>
+                                    <div class="invalid-feedback">
+                                        Please enter a username.
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
+                                    <div class="invalid-feedback">
+                                        Please enter your password.
+                                    </div>
+                                </div>
+                                <!-- register via this link -->
+                                <a href="{{ url_for('index') }}">Sign Up</a>
+                                <button type="submit" class="btn btn-primary">Log In</button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+
+        <!-- content of the page -->
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+
+        <!-- footer of the page -->
+        <footer>Dani van Enk, Hakkajiten 2020</footer>
+    </div>
+
+    <!-- bootstrap scripts inclusion -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
