@@ -25,6 +25,22 @@
 
     <!-- register form, enter username/password and retype password -->
     <form class="needs-validation" action="{{ url_for('register') }}" method="post" novalidate>
+        <div class="form-group form-row">
+            <div class="col">
+            <label for="register_first_name">First Name: </label>
+            <input type="text" class="form-control" name="register_first_name" id="register_first_name" placeholder="First Name" required>
+            <div class="invalid-feedback">
+                Please enter your First Name.
+            </div>
+            </div>
+            <div class="col">
+            <label for="register_last_name">Last Name: </label>
+            <input type="text" class="form-control" name="register_last_name" id="register_last_name" placeholder="Last Name" required>
+            <div class="invalid-feedback">
+                Please enter your Last Name.
+            </div>
+            </div>
+        </div>
         <div class="form-group">
             <label for="register_username">Username: </label>
             <input type="username" class="form-control" name="register_username" id="register_username" placeholder="Username" required>
@@ -44,6 +60,14 @@
             <input type="password" name="register_rpassword" class="form-control" id="register_rpassword" placeholder="Retype Password" required>
             <div class="invalid-feedback">
                 Please enter your again password.
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="register_email">E-mail</label>
+            <input type="text" name="register_email" class="form-control" id="register_email"
+                placeholder="E-mail" required>
+            <div class="invalid-feedback">
+                Please enter your E-mail.
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Register</button>

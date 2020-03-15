@@ -4,7 +4,7 @@
 
 <head>
     <!-- declaration of the page title, charset -->
-    <title>Project 2 - {% block title %}{% endblock %}</title>
+    <title>Project 3 - {% block title %}{% endblock %}</title>
     <meta charset="UTF-8">
 
     <!-- bootstrap inclusion -->
@@ -13,7 +13,7 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- icon inclusion -->
-    <link rel="icon" href="{{ url_for('static', filename='img/books_icon.png') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/pizza_icon.png') }}">
 
     <!-- style and js inclusion -->
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
@@ -33,13 +33,13 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav" id="nav_menu">
                     <!-- show navbar items depending on if user is logged on or not -->
-                    {% if login %}
+                    {% if current_user.is_authenticated %}
                         {% for item_key in urls %}
                             <a class="nav-item nav-link" href="{{ url_for(item_key) }}">{{ urls[item_key][0] }}</a>
                         {% endfor %}
                         <!-- greet user and show login button if logged on -->
                         <div class="login">
-                            <div class="nav-item navbar-text">Hi there, {{ user }} |</div>
+                            <div class="nav-item navbar-text">Hi there, {{ current_user.first_name }} {{ current_user.last_name }} |</div>
                             <a class="nav-item nav-link" href="{{ url_for('logout') }}" role="button">Logout</a>
                         </div>
                     {% else %}
@@ -68,7 +68,7 @@
                                     </div>
                                 </div>
                                 <!-- register via this link -->
-                                <a href="{{ url_for('index') }}">Sign Up</a>
+                                <a href="{{ url_for('register') }}">Sign Up</a>
                                 <button type="submit" class="btn btn-primary">Log In</button>
                             </form>
                         </div>
