@@ -1,0 +1,47 @@
+<!--
+    book page
+    it extends from layout.html
+
+    Dani van Enk, 11823526
+-->
+
+{% extends "layout.html" %}
+
+<!-- title of the page -->
+{% block title %}
+    Menu
+{% endblock %}
+
+<!-- content of the page -->
+{% block content %}
+    <h1>Menu</h1>
+    <hr>
+    <p class="row col-sm-12">
+        This is the menu of Pinocchio's Pizza & Subs<br>
+        The size are S: Small and L: Large
+    </p>
+    <div class="row">
+        {% for menu_type, menu_list in menu.items() %}
+                <div class="col-sm-12">
+                    <h4>{{ menu_type }}</h4>
+                    <ul>
+                        {% for menu_item in menu_list %}
+                            <li class="row">
+                                <div class="col-sm-6">{{ menu_item }}</div>
+                                <div class="col-sm-6">{{ "$%.2f"|format(menu_item.cost|float)}}</div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+        {% endfor %}
+    </div>
+    
+{% endblock %}
+
+<!-- <div class="col-md-4 card card-body">
+            <h6 class="card-title">{{ result.title }}</h6>
+            <p class="card-text">
+                {{ result.author}} ({{ result.year }})
+            </p>
+            <a href="{{ url_for('book', isbn=result.isbn) }}" class="card-link btn btn-primary">Book page</a>
+        </div> -->

@@ -5,14 +5,13 @@ from flask import Flask, render_template, request, session, abort, escape, \
 from flask_session import Session
 # from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_admin import Admin
-from flask_admin.contrib.sqla import ModelView
+from flask_admin import Admin, AdminIndexView
 from flask_login import LoginManager, login_user, login_required, logout_user
 from werkzeug.exceptions import default_exceptions, HTTPException
 from functions import security
 
-from app.models import db, User, Pizza, NonPizza
-from app.adminviews import UserView
+from app.models import db, User, AnonymousUser, Pizza, NonPizza, Topping, Extra
+from app.adminviews import AdminView, MenuView  # , AdminUserIndexView
 
 # Configure Flask app
 app = Flask(__name__)
@@ -35,13 +34,16 @@ Session(app)
 Migrate(app, db)
 
 # admin setup
-admin = Admin(app, name='Pinocchio Admin', template_mode='bootstrap3')
-admin.add_view(UserView(User, db.session))
-admin.add_view(ModelView(Pizza, db.session))
-admin.add_view(ModelView(NonPizza, db.session))
+admin = Admin(app, index_view=AdminIndexView())
+admin.add_view(AdminView(User, db.session))
+admin.add_view(MenuView(Pizza, db.session))
+admin.add_view(MenuView(Topping, db.session))
+admin.add_view(MenuView(NonPizza, db.session))
+admin.add_view(MenuView(Extra, db.session))
 
 login_manager = LoginManager(app)
 login_manager.init_app(app)
+login_manager.anonymous_user = AnonymousUser
 
 
 @login_manager.user_loader
@@ -76,8 +78,8 @@ def setup_urls():
 
             # define the routes excluded and only available if logged on
             forbidden = ["log", "static", "register", "admin", "user", "pizza",
-                         "nonpizza"]
-            login_req = ["test"]
+                         "nonpizza", "extra", "topping"]
+            login_req = ["menu"]
 
             # check if allowed
             allowed = not any(item in endpoint for item in forbidden)
@@ -210,7 +212,7 @@ def login():
     else:
         abort(403)
 
-    return redirect(url_for("index"))
+    return redirect(url_for("menu"))
 
 
 @app.route("/logout", methods=["GET"])
@@ -222,11 +224,28 @@ def logout():
     return redirect(url_for("index"), 303)
 
 
-@app.route("/test", methods=["GET"])
+@app.route("/menu", methods=["GET"])
 @login_required
-def test():
+def menu():
+    if request.method != "GET":
+        abort(405)
     urls = session.get("urls")
-    return render_template("index.html", urls=urls)
+
+    menu = dict()
+
+    pizza_types = [item.pizzatype for item in Pizza.query.
+                   with_entities(Pizza.pizzatype).distinct().all()]
+    nonpizza_types = [item.type_name for item in NonPizza.query.
+                      with_entities(NonPizza.type_name).distinct().all()]
+
+    for pizza_type in pizza_types:
+        menu[pizza_type] = Pizza.query.filter_by(pizzatype=pizza_type).all()
+
+    for nonpizza_type in nonpizza_types:
+        menu[nonpizza_type] = \
+            NonPizza.query.filter_by(type_name=nonpizza_type).all()
+
+    return render_template("menu.html", urls=urls, menu=menu)
 
 
 @app.errorhandler(HTTPException)
