@@ -59,7 +59,7 @@ $main-color: #E06;
         color: #FFF!important;
     }
 
-    .login {
+    .right {
         right: 0;
         position: absolute;
         margin: 0 1% 0 0;
@@ -104,14 +104,12 @@ $main-color: #E06;
     }
 
     .card {
-        font-size: 80%;
+        padding: 1%;
+    }
 
-        .card-body {
-            padding: 1.25rem 0;
-        }
-
-        .card-text {
-            white-space: pre-line;
+    form {
+        .row {
+            margin: 0!important;
         }
     }
 

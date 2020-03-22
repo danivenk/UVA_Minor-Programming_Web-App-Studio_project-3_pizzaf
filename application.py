@@ -6,12 +6,15 @@ from flask_session import Session
 # from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_admin import Admin, AdminIndexView
-from flask_login import LoginManager, login_user, login_required, logout_user
+from flask_login import LoginManager, login_user, login_required, logout_user,\
+                        current_user
 from werkzeug.exceptions import default_exceptions, HTTPException
 from functions import security
 
-from app.models import db, User, AnonymousUser, Pizza, NonPizza, Topping, Extra
-from app.adminviews import AdminView, MenuView  # , AdminUserIndexView
+from app.models import db, User, AnonymousUser, Pizza, NonPizza, Topping, \
+                       Order, OrderItem, Product
+from app.adminviews import AdminView, MenuView, OrderView, ProductView
+# , AdminUserIndexView
 
 # Configure Flask app
 app = Flask(__name__)
@@ -39,7 +42,9 @@ admin.add_view(AdminView(User, db.session))
 admin.add_view(MenuView(Pizza, db.session))
 admin.add_view(MenuView(Topping, db.session))
 admin.add_view(MenuView(NonPizza, db.session))
-admin.add_view(MenuView(Extra, db.session))
+admin.add_view(OrderView(Order, db.session))
+admin.add_view(OrderView(OrderItem, db.session))
+admin.add_view(ProductView(Product, db.session))
 
 login_manager = LoginManager(app)
 login_manager.init_app(app)
@@ -78,7 +83,8 @@ def setup_urls():
 
             # define the routes excluded and only available if logged on
             forbidden = ["log", "static", "register", "admin", "user", "pizza",
-                         "nonpizza", "extra", "topping"]
+                         "nonpizza", "extra", "topping", "order", "orderitem",
+                         "product", "cart"]
             login_req = ["menu"]
 
             # check if allowed
@@ -229,6 +235,7 @@ def logout():
 def menu():
     if request.method != "GET":
         abort(405)
+
     urls = session.get("urls")
 
     menu = dict()
@@ -238,6 +245,8 @@ def menu():
     nonpizza_types = [item.type_name for item in NonPizza.query.
                       with_entities(NonPizza.type_name).distinct().all()]
 
+    toppings = Topping.query.all()
+
     for pizza_type in pizza_types:
         menu[pizza_type] = Pizza.query.filter_by(pizzatype=pizza_type).all()
 
@@ -245,7 +254,27 @@ def menu():
         menu[nonpizza_type] = \
             NonPizza.query.filter_by(type_name=nonpizza_type).all()
 
-    return render_template("menu.html", urls=urls, menu=menu)
+    return render_template("menu.html", urls=urls, menu=menu, tops=toppings)
+
+
+@app.route("/cart", methods=["GET", "POST"])
+@login_required
+def shoppingcart():
+
+    if request.method not in request.url_rule.methods:
+        abort(405)
+
+    urls = session.get("urls")
+
+    if request.method == "GET":
+        orders = current_user.order
+
+        for order in orders:
+            if not order.checkedout:
+                details = order.order_details()
+        return render_template("cart.html", urls=urls, details=details)
+
+    return render_template("index.html", urls=urls)
 
 
 @app.errorhandler(HTTPException)

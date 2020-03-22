@@ -28,8 +28,43 @@
                         {% for menu_item in menu_list %}
                             <li class="row">
                                 <div class="col-sm-6">{{ menu_item }}</div>
-                                <div class="col-sm-6">{{ "$%.2f"|format(menu_item.cost|float)}}</div>
+                                <div class="col-sm-4">{{ "$%.2f"|format(menu_item.cost|float)}}</div>
+                                <div class="col-sm-2">
+                                    <a class="btn btn-primary" role="button" data-toggle="dropdown">Choose</a>
+                                </div>
                             </li>
+                            <form class="needs-validation col-sm-12 card" action="{{ url_for('shoppingcart') }}" method="post" novalidate>
+                                <div class="row">
+                                    <div class="form-group col-sm-12">
+                                        <label for="quantity">Quantity: </label>
+                                        <input type="number" class="form-control col-sm-2" name="quantity" id="quantity" min="1" required>
+                                        <div class="invalid-feedback">
+                                            Please enter a quantity above 0.
+                                        </div>
+                                    </div>
+                                    {% if "Pizza" in menu_type %}
+                                        <div class="form-group col-sm-12">
+                                            <label for="topping">Topping: </label>
+                                            <div class="row">
+                                                {% for topping in range(menu_item.no_toppings) %}
+                                                    <select name="topping" class="form-control" required>
+                                                        {% for topping_type in tops %}
+                                                            <option>{{ topping_type }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                    <div class="invalid-feedback">
+                                                        Please enter your password.
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    <!-- register via this link -->
+                                    <div class="col-sm-2">
+                                        <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </form>
                         {% endfor %}
                     </ul>
                 </div>

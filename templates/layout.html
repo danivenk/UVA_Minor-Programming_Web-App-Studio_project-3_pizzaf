@@ -38,8 +38,9 @@
                             <a class="nav-item nav-link" href="{{ url_for(item_key) }}">{{ urls[item_key][0] }}</a>
                         {% endfor %}
                         <!-- greet user and show login button if logged on -->
-                        <div class="login">
-                            <div class="nav-item navbar-text">Hi there, {{ current_user.first_name }} {{ current_user.last_name }} |</div>
+                        <div class="right">
+                            <a class="nav-item nav-link" href="{{ url_for('shoppingcart') }}" role="button">Cart {{ current_user.items_in_cart() }}</a>
+                            <div class="nav-item navbar-text">| Hi there, {{ current_user.first_name }} {{ current_user.last_name }} |</div>
                             <a class="nav-item nav-link" href="{{ url_for('logout') }}" role="button">Logout</a>
                         </div>
                     {% else %}
@@ -49,8 +50,8 @@
                             {% endif %}
                         {% endfor %}
                         <!-- show login screen in dropdown if not logged in -->
-                        <a class="nav-item nav-link dropdown dropdown-toggle login" id="drop_link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Login</a>
-                        <div class="dropdown-menu login" id="drop_menu">
+                        <a class="nav-item nav-link dropdown dropdown-toggle right" id="drop_link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Login</a>
+                        <div class="dropdown-menu right" id="drop_menu">
                             <!-- login form -->
                             <form class="needs-validation" action="{{ url_for('login') }}" method="post" novalidate>
                                 <div class="form-group">
