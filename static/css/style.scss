@@ -106,11 +106,19 @@ $main-color: #E06;
     .card {
         padding: 1%;
     }
+    
+    form.menu {
+        display: None;
+    }
 
     form {
         .row {
             margin: 0!important;
         }
+    }
+
+    .total {
+        font-weight: bolder;
     }
 
     /* footer */

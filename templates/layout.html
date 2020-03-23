@@ -39,7 +39,11 @@
                         {% endfor %}
                         <!-- greet user and show login button if logged on -->
                         <div class="right">
-                            <a class="nav-item nav-link" href="{{ url_for('shoppingcart') }}" role="button">Cart {{ current_user.items_in_cart() }}</a>
+                            {% if current_user.items_in_cart() %}
+                                <a class="nav-item nav-link" href="{{ url_for('shoppingcart') }}" role="button">Cart {{ current_user.items_in_cart() }}</a>
+                            {% else %}
+                                <a class="nav-item nav-link" href="{{ url_for('shoppingcart') }}" role="button">Cart</a>
+                            {% endif %}
                             <div class="nav-item navbar-text">| Hi there, {{ current_user.first_name }} {{ current_user.last_name }} |</div>
                             <a class="nav-item nav-link" href="{{ url_for('logout') }}" role="button">Logout</a>
                         </div>

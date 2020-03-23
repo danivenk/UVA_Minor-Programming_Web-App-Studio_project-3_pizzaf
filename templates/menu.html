@@ -30,10 +30,10 @@
                                 <div class="col-sm-6">{{ menu_item }}</div>
                                 <div class="col-sm-4">{{ "$%.2f"|format(menu_item.cost|float)}}</div>
                                 <div class="col-sm-2">
-                                    <a class="btn btn-primary" role="button" data-toggle="dropdown">Choose</a>
+                                    <a class="btn btn-primary menu" role="button">Choose</a>
                                 </div>
                             </li>
-                            <form class="needs-validation col-sm-12 card" action="{{ url_for('shoppingcart') }}" method="post" novalidate>
+                            <form class="needs-validation col-sm-12 card menu" action="{{ url_for('shoppingcart') }}" method="post" novalidate>
                                 <div class="row">
                                     <div class="form-group col-sm-12">
                                         <label for="quantity">Quantity: </label>
@@ -43,11 +43,13 @@
                                         </div>
                                     </div>
                                     {% if "Pizza" in menu_type %}
+                                        <input type="hidden" name="item_type" value="Pizza">
+                                        <input type="hidden" name="item_id" value="{{ menu_item.id }}">
                                         <div class="form-group col-sm-12">
                                             <label for="topping">Topping: </label>
                                             <div class="row">
                                                 {% for topping in range(menu_item.no_toppings) %}
-                                                    <select name="topping" class="form-control" required>
+                                                    <select name="topping{{ topping }}" class="form-control" required>
                                                         {% for topping_type in tops %}
                                                             <option>{{ topping_type }}</option>
                                                         {% endfor %}
@@ -57,6 +59,13 @@
                                                     </div>
                                                 {% endfor %}
                                             </div>
+                                        </div>
+                                    {% else %}
+                                        <input type="hidden" name="item_type" value="NonPizza">
+                                        <input type="hidden" name="item_id" value="{{ menu_item.id }}">
+                                        <div class="form-group form-check col-sm-12">
+                                            <input class="form-check-input" type="checkbox" value="cheese" id="cheese" name="cheese">
+                                            <label class="form-check-label" for="cheese">Extra Cheese</label>
                                         </div>
                                     {% endif %}
                                     <!-- register via this link -->

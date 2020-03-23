@@ -1,4 +1,5 @@
 import os
+from datetime import date
 
 from flask import Flask, render_template, request, session, abort, escape, \
                   url_for, redirect
@@ -85,7 +86,7 @@ def setup_urls():
             forbidden = ["log", "static", "register", "admin", "user", "pizza",
                          "nonpizza", "extra", "topping", "order", "orderitem",
                          "product", "cart"]
-            login_req = ["menu"]
+            login_req = ["menu", "recent"]
 
             # check if allowed
             allowed = not any(item in endpoint for item in forbidden)
@@ -103,7 +104,7 @@ def setup_urls():
                 url_list[endpoint] = [endpoint.capitalize(), None]
 
     # sort dictionary by key
-    url_list = dict(sorted(url_list.items(), key=lambda x: x[0]))
+    url_list = dict(sorted(url_list.items()))
 
     # add url_list to session
     session["urls"] = url_list
@@ -266,15 +267,132 @@ def shoppingcart():
 
     urls = session.get("urls")
 
+    orders = current_user.order
+
+    details = None
+
+    for order in orders:
+        if not order.checkedout:
+            current_order = order
+            details = order.order_details()
+
     if request.method == "GET":
-        orders = current_user.order
-
-        for order in orders:
-            if not order.checkedout:
-                details = order.order_details()
         return render_template("cart.html", urls=urls, details=details)
+    elif request.method == "POST":
+        item_type = request.form.get("item_type")
+        item_id = request.form.get("item_id")
+        quantity = request.form.get("quantity")
 
-    return render_template("index.html", urls=urls)
+        if not details:
+            current_order = Order(user=current_user,
+                                  created_date=date.today())
+            db.session.add(current_order)
+            db.session.commit()
+
+        if item_type == "Pizza":
+            pizza = Pizza.query.get(item_id)
+
+            toppings = []
+
+            for topping_id in range(pizza.no_toppings):
+                topping_name = request.form.get(f"topping{topping_id}")
+                toppings.append(
+                    Topping.query.filter_by(
+                        topping_name=topping_name).first())
+
+            toppings = sorted(toppings, key=lambda x: x.topping_name)
+
+            products = Product.query.join(Pizza).filter_by(id=item_id).all()
+
+            if len(products) == 0:
+                current_product = None
+
+            for product in products:
+                if sorted(product.toppings, key=lambda x: x.topping_name) \
+                        == toppings:
+                    current_product = product
+                else:
+                    current_product = None
+
+            if not current_product:
+                current_product = Product(pizza=pizza, toppings=toppings)
+
+                db.session.add(current_product)
+                db.session.commit()
+        else:
+            nonpizza = NonPizza.query.get(item_id)
+
+            extra_cheese = request.form.get("cheese")
+
+            if extra_cheese:
+                extra = True
+            else:
+                extra = False
+
+            products = Product.query.join(NonPizza).filter_by(id=item_id).all()
+
+            if len(products) == 0:
+                current_product = None
+
+            for product in products:
+                if product.extra_cheese:
+                    current_product = product
+                else:
+                    current_product = None
+
+            if not current_product:
+                current_product = Product(nonpizza=nonpizza,
+                                          extra_cheese=extra)
+
+                db.session.add(current_product)
+                db.session.commit()
+
+        order_item = OrderItem(quantity=quantity,
+                               created_date=date.today(),
+                               order=current_order,
+                               product=current_product)
+
+        current_order.orderitem.append(order_item)
+
+        db.session.add(order_item)
+        db.session.commit()
+
+        return redirect(url_for("shoppingcart"), 303)
+
+
+@app.route("/checkout", methods=["POST"])
+@login_required
+def pay_now():
+
+    if request.method not in request.url_rule.methods:
+        abort(405)
+
+    order_id = request.form.get("order")
+
+    checkout_order = Order.query.get(order_id)
+
+    if current_user.get_id() == checkout_order.user.get_id():
+        checkout_order.checkedout = True
+        db.session.commit()
+
+        return redirect(url_for("index"))
+
+    return abort(403)
+
+
+@app.route("/history", methods=["GET"])
+@login_required
+def recent():
+
+    if request.method not in request.url_rule.methods:
+        abort(405)
+
+    # get url list from session
+    url_list = session.get("urls")
+
+    orders = sorted(current_user.order, key=lambda x: x.id, reverse=True)
+
+    return render_template("history.html", urls=url_list, orders=orders)
 
 
 @app.errorhandler(HTTPException)

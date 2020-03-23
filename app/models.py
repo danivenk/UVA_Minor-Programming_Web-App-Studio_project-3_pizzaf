@@ -121,7 +121,7 @@ class Product(db.Model):
 
     def __repr__(self):
         if self.pizza_id:
-            return f"{self.pizza}"
+            return f"{self.pizza} {self.toppings}"
         elif self.nonpizza_id:
             return f"{self.nonpizza}"
 
@@ -146,6 +146,7 @@ class Order(db.Model):
         order_details = dict()
 
         order_details["user"] = self.user
+        order_details["order"] = self
 
         order_details["items"] = []
 
@@ -169,6 +170,8 @@ class OrderItem(db.Model):
     product = db.relationship("Product", uselist=False)
 
     def cost(self):
+        if self.product.extra_cheese:
+            return self.quantity * (self.product.get_item().cost + .5)
         return self.quantity * self.product.get_item().cost
 
     def __repr__(self):
