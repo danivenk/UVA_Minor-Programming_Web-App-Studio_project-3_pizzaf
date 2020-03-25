@@ -18,6 +18,18 @@ function init() {
                 if (item.value === "") {
                     event.preventDefault();
                     event.stopPropagation();
+                }
+            };
+
+            // find the input with class cart (cart page)
+            const cart = event.target.closest("form").querySelector(".cart");
+
+            // if cart is defined then ask for confirmation, not if cart is not defined
+            //  it is nested because if you put these in the same if statement it'll ask confirmation for every form
+            if (cart) {
+                if (!confirm("Are you sure?")) {
+                    event.preventDefault();
+                    event.stopPropagation();
                 };
             };
 

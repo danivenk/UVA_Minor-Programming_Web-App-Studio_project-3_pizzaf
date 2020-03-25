@@ -47,7 +47,8 @@
         <form class="needs-validation row" action="{{ url_for('pay_now') }}"
                 method="post" novalidate>
             <div class="col-sm-12">
-                <input type="hidden" name="order" value="{{ details['order'].id }}">
+                <input type="hidden" name="order" class="cart"
+                    value="{{ details['order'].id }}">
                 <button type="submit" class="btn btn-primary">Checkout</button>
             </div>
         </form>
