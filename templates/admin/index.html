@@ -1,0 +1,15 @@
+<!--
+    admin home page
+    it extends from admin/master.html
+
+    Dani van Enk, 11823526
+-->
+{% extends "admin/master.html" %}
+
+<!-- custom index body -->
+{% block body %}
+    <h1>Admin</h1>
+    <p>Hello There</p>
+    <p>General {{ user.last_name }}, I didn't expect you there</p>
+    <p>This is the pizza order website for Pinocchio’s Pizza & Subs</p>
+{% endblock %}

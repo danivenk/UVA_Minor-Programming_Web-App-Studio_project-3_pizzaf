@@ -1,6 +1,9 @@
 <!--
-    book page
+    history page
     it extends from layout.html
+    
+    references:
+        https://jinja.palletsprojects.com/en/2.11.x/templates/
 
     Dani van Enk, 11823526
 -->
@@ -16,19 +19,31 @@
 {% block content %}
     <h1>Recent Order History</h1>
     <hr>
+
+    <!-- show all recent orders -->
     <div class="row">
         {% for order in orders %}
             <div class="card col-sm-6">
                 <h4>
                     {{ order }}  
-
+                    
+                    <!-- show payed or link to cart depending on checkedout -->
                     {% if order.checkedout %}
                         (Payed)
                     {% else %}
-                        <a class="btn btn-primary" role="button" href="{{ url_for('shoppingcart') }}">To cart</a>
+                        <a class="btn btn-primary" role="button"
+                                href="{{ url_for('shoppingcart') }}">
+                            To cart
+                        </a>
                     {% endif %}
                 </h4>
-                <time datetime="{{ order.created_date.strftime('%y-%m-%d') }}">Created on: {{ order.created_date.strftime('%y-%m-%d') }}</time>
+
+                <!-- create date -->
+                <time datetime="{{ order.created_date.strftime('%y-%m-%d') }}">
+                    Created on: {{ order.created_date.strftime('%y-%m-%d') }}
+                </time>
+                
+                <!-- order details -->
                 <div class="row">
                     {% set total = namespace(value=0) %}
                     {% for item in order.order_details()["items"] %}

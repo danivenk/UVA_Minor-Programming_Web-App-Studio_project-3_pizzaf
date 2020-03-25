@@ -34,11 +34,15 @@ function init() {
         }, false);
     });
 
+    // define all links and forms in the menu list
     const a = document.querySelectorAll("a.menu");
     const form = document.querySelectorAll("form.menu");
 
+    // for each link add a toggle function which toggles visablity of the form
     a.forEach(function(link, index) {
         link.addEventListener("click", function () {
+
+            // toggle visibility of the form upon click of the link
             if (form[index].style.display === "flex") {
                 form[index].style.display = "";
             } else if (form[index].style.display === "") {

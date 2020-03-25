@@ -1,22 +1,29 @@
 /* Dani van Enk, 11823526 */
 /* predefining some mulitple used colors */
+/* text color inheritance */
+ul li a, ul li a:hover {
+  color: #000; }
+
+a.index, a.index .index:hover {
+  color: #00F; }
+
 /* alignment inheritance */
 h1, footer, .error {
   text-align: center; }
 
 /* button border color inheritance */
-.right form .btn-primary:active, .container form .btn-primary:active, .row .btn-primary:active, .right form .btn-primary:focus, .container form .btn-primary:focus, .row .btn-primary:focus, .right form .btn-primary, .container form .btn-primary, .row .btn-primary, .right form .btn-primary:hover, .container form .btn-primary:hover, .row .btn-primary:hover {
+.right form .btn-primary:active, .container form .btn-primary:active, .header .btn-primary:active, .row .btn-primary:active, .right form .btn-primary:focus, .container form .btn-primary:focus, .header .btn-primary:focus, .row .btn-primary:focus, .right form .btn-primary, .container form .btn-primary, .header .btn-primary, .row .btn-primary, .right form .btn-primary:hover, .container form .btn-primary:hover, .header .btn-primary:hover, .row .btn-primary:hover {
   border-color: #bb0050 !important; }
 
 /* button when clicked inheritance */
-.right form .btn-primary:active, .container form .btn-primary:active, .row .btn-primary:active, .right form .btn-primary:focus, .container form .btn-primary:focus, .row .btn-primary:focus {
+.right form .btn-primary:active, .container form .btn-primary:active, .header .btn-primary:active, .row .btn-primary:active, .right form .btn-primary:focus, .container form .btn-primary:focus, .header .btn-primary:focus, .row .btn-primary:focus {
   background-color: #ca0057 !important;
   box-shadow: 0 0 0 0.2rem #ff2281 !important; }
 
-.right form .btn-primary, .container form .btn-primary, .row .btn-primary {
+.right form .btn-primary, .container form .btn-primary, .header .btn-primary, .row .btn-primary {
   background-color: #E06 !important;
   float: right !important; }
-.right form .btn-primary:hover, .container form .btn-primary:hover, .row .btn-primary:hover {
+.right form .btn-primary:hover, .container form .btn-primary:hover, .header .btn-primary:hover, .row .btn-primary:hover {
   background-color: #d5005b !important; }
 
 /* container style */
@@ -57,6 +64,9 @@ h4 {
   font-weight: bold;
   font-size: 120%; }
 
+.header .btn {
+  float: none !important; }
+
 .row {
   margin-top: 2%;
   margin-bottom: 2%; }
@@ -66,9 +76,14 @@ h4 {
 
 form.menu {
   display: None; }
+  form.menu .row {
+    margin: 0 !important; }
 
-form .row {
-  margin: 0 !important; }
+a.index {
+  display: contents; }
+
+ul li {
+  list-style-type: none; }
 
 .total {
   font-weight: bolder; }
@@ -94,6 +109,10 @@ footer {
     position: relative;
     margin: 0;
     left: 0; }
+
+  p.row.index {
+    margin-left: 0;
+    margin-right: 0; }
 
   footer {
     margin: 5% 0 2% 0; } }

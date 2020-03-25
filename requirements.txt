@@ -5,3 +5,12 @@ SQLAlchemy
 requests
 flask-migrate
 flask-admin
+flask-login
+flask-sqlalchemy
+python-dotenv
+os
+datetime
+werkzeug
+hashlib
+binascii
+wtforms

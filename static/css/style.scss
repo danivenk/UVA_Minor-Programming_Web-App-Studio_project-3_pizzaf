@@ -4,6 +4,15 @@
 $main-color: #E06;
 
 
+/* text color inheritance */
+%black {
+    color: #000;
+}
+
+%blue {
+    color: #00F;
+}
+
 /* alignment inheritance */
 %alignment {
     text-align: center;
@@ -96,6 +105,14 @@ $main-color: #E06;
         font-size: 120%;
     }
 
+    .header {
+        @extend %button;
+
+        .btn {
+            float: none!important;
+        }
+    }
+
     .row {
         margin-top: 2%;
         margin-bottom: 2%;
@@ -106,14 +123,34 @@ $main-color: #E06;
     .card {
         padding: 1%;
     }
-    
+
     form.menu {
         display: None;
-    }
 
-    form {
         .row {
             margin: 0!important;
+        }
+    }
+
+    a.index {
+        display: contents;
+        @extend %blue;
+
+        .index:hover{
+            @extend %blue;
+        }
+
+    }
+
+    ul li {
+        list-style-type: none;
+        
+        a {
+            @extend %black;
+        }
+
+        a:hover{
+            @extend %black;
         }
     }
 
@@ -151,6 +188,11 @@ $main-color: #E06;
         position: relative;
         margin: 0;
         left: 0;
+    }
+
+    p.row.index{
+        margin-left: 0;
+        margin-right: 0;
     }
 
     footer {

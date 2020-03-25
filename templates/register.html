@@ -2,6 +2,9 @@
     register page
     uses the message parameter for feedback
     it extends from layout.html
+    
+    references:
+        https://jinja.palletsprojects.com/en/2.11.x/templates/
 
     Dani van Enk, 11823526
 -->
@@ -23,51 +26,82 @@
         <p>{{ message }}</p>
     {% endif %}
 
-    <!-- register form, enter username/password and retype password -->
-    <form class="needs-validation" action="{{ url_for('register') }}" method="post" novalidate>
+    <!-- register/forgot password form
+        source: https://getbootstrap.com/docs/4.1/components/forms/-->
+    <form class="needs-validation" action="{{ url_for('register') }}"
+            method="post" novalidate>
+
+        <!-- form group for first and last name -->
         <div class="form-group form-row">
             <div class="col">
-            <label for="register_first_name">First Name: </label>
-            <input type="text" class="form-control" name="register_first_name" id="register_first_name" placeholder="First Name" required>
-            <div class="invalid-feedback">
-                Please enter your First Name.
-            </div>
+                <label for="register_first_name">First Name: </label>
+                <input type="text" class="form-control"
+                    name="register_first_name" id="register_first_name"
+                    placeholder="First Name" required>
+                
+                <!-- feedback for input -->
+                <div class="invalid-feedback">
+                    Please enter your First Name.
+                </div>
             </div>
             <div class="col">
-            <label for="register_last_name">Last Name: </label>
-            <input type="text" class="form-control" name="register_last_name" id="register_last_name" placeholder="Last Name" required>
-            <div class="invalid-feedback">
-                Please enter your Last Name.
-            </div>
+                <label for="register_last_name">Last Name: </label>
+                <input type="text" class="form-control"
+                    name="register_last_name" id="register_last_name"
+                    placeholder="Last Name" required>
+                    
+                <!-- feedback for input -->
+                <div class="invalid-feedback">
+                    Please enter your Last Name.
+                </div>
             </div>
         </div>
+
+        <!-- email form group -->
+        <div class="form-group">
+            <label for="register_email">E-mail</label>
+            <input type="text" name="register_email" class="form-control"
+                id="register_email" placeholder="E-mail" required>
+            
+            <!-- feedback for input -->
+            <div class="invalid-feedback">
+                Please enter your E-mail.
+            </div>
+        </div>
+
+        <!-- username form group -->
         <div class="form-group">
             <label for="register_username">Username: </label>
-            <input type="username" class="form-control" name="register_username" id="register_username" placeholder="Username" required>
+            <input type="username" class="form-control" name="register_username"
+                id="register_username" placeholder="Username" required>
+            
+            <!-- feedback for input -->
             <div class="invalid-feedback">
                 Please enter a username.
             </div>
         </div>
+
+        <!-- password form group -->
         <div class="form-group">
             <label for="register_password">Password</label>
-            <input type="password" name="register_password" class="form-control" id="register_password" placeholder="Password" required>
+            <input type="password" name="register_password" class="form-control"
+                id="register_password" placeholder="Password" required>
+
+            <!-- feedback for input -->
             <div class="invalid-feedback">
                 Please enter your password.
             </div>
         </div>
+
+        <!-- retype password from group -->
         <div class="form-group">
             <label for="register_rpassword">Retype Password</label>
-            <input type="password" name="register_rpassword" class="form-control" id="register_rpassword" placeholder="Retype Password" required>
+            <input type="password" name="register_rpassword" class="form-control"
+                id="register_rpassword" placeholder="Retype Password" required>
+
+            <!-- feedback for input -->
             <div class="invalid-feedback">
                 Please enter your again password.
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="register_email">E-mail</label>
-            <input type="text" name="register_email" class="form-control" id="register_email"
-                placeholder="E-mail" required>
-            <div class="invalid-feedback">
-                Please enter your E-mail.
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Register</button>

@@ -2,6 +2,9 @@
     book page
     it extends from layout.html
 
+    references:
+        https://jinja.palletsprojects.com/en/2.11.x/templates/
+
     Dani van Enk, 11823526
 -->
 
@@ -15,21 +18,38 @@
 <!-- content of the page -->
 {% block content %}
     <h1>Cart</h1>
-    <hr>
-    <div class="row">
-        {% set total = namespace(value=0) %}
-        {% for item in details["items"] %}
-            <div class="col-sm-6">{{ item }}</div>
-            <div class="col-sm-6">{{ "$%.2f"|format(item.cost()|float) }}</div>
-            {% set total.value = total.value + item.cost() %}
-        {% endfor %}
-        <div class="col-sm-6 total">Total</div>
-        <div class="col-sm-6 total">{{ "$%.2f"|format(total.value|float) }}</div>
+    <div class="header">
+        <a href="{{ url_for('menu') }}" class="btn btn-primary"
+                role="button">
+            Back to menu
+        </a>
     </div>
-    <form class="needs-validation row" action="{{ url_for('pay_now') }}" method="post" novalidate>
-        <div class="col-sm-12">
-            <input type="hidden" name="order" value="{{ details['order'].id }}">
-            <button type="submit" class="btn btn-primary">Checkout</button>
-        </div>
-    </form>
+    <hr>
+
+    <!-- show items in cart and show total -->
+    <div class="row">
+        {% if details %}
+            {% set total = namespace(value=0) %}
+            {% for item in details["items"] %}
+                <div class="col-6">{{ item }}</div>
+                <div class="col-6">{{ "$%.2f"|format(item.cost()|float) }}</div>
+                {% set total.value = total.value + item.cost() %}
+            {% endfor %}
+            <div class="col-6 total">Total</div>
+            <div class="col-6 total">{{ "$%.2f"|format(total.value|float) }}</div>
+        {% else %}
+            <p>Not yet started an order yet</p>
+        {% endif %}
+    </div>
+
+    {% if details %}
+        <!-- checkout -->
+        <form class="needs-validation row" action="{{ url_for('pay_now') }}"
+                method="post" novalidate>
+            <div class="col-sm-12">
+                <input type="hidden" name="order" value="{{ details['order'].id }}">
+                <button type="submit" class="btn btn-primary">Checkout</button>
+            </div>
+        </form>
+    {% endif %}
 {% endblock %}

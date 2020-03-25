@@ -1,6 +1,9 @@
 <!--
     home page
     it extends from layout.html
+    
+    references:
+        https://jinja.palletsprojects.com/en/2.11.x/templates/
 
     Dani van Enk, 11823526
 -->
@@ -15,9 +18,7 @@
 <!-- content of the page -->
 {% block content %}
     <h1>Welcome</h1>
-    <p class="row">
-        This webapp contains a book database in which you can review those books. You can only review a book once and to search for the books and review you need to be logged on.
+    <p class="row index">
+        This webapp contains the menu database of <a class="index" href="http://www.pinocchiospizza.net/menu.html"> Pinocchio’s Pizza & Subs </a>. Here you can place an order.
     </p>
-
-    {{ a }}
 {% endblock %}

@@ -2,3 +2,5 @@ __pycache__
 flask_session
 .sass-cache
 test.py
+.flaskenv
+.env
